@@ -1,8 +1,9 @@
 function main(){
 var ss  = new Array(4,6,7,8,11);
 var sss = new Array();
-sss     = streets_dif(ss,1);
-qvlib.MsgBox(sss);
+//qvlib.MsgBox("sdsd");
+sss     = streets_dif(ss,2);
+printMas(sss);
 return 0;
 }
 
@@ -72,6 +73,7 @@ var len = mas.length;
 if (len < (5 - isum))
 	return 0;
 var tempMas    = new Array();
+var prMas    = new Array();
 var listStreet = new Array();
 var promMas    = new Array();
 tempMas        = insert_nul(mas, isum);
@@ -80,8 +82,12 @@ var ind;
 var set        = tempMas.length - 5;
 for (ind = 0; ind < set; ind++){
 	promMas	   = difMasiv(gen.slice(ind,ind+5), tempMas.slice(ind,ind+5), isum);
-	if (promMas.length>0)
-		listStreet.push(promMas);
+	if (promMas.length>0){
+		if (eqMas(promMas, prMas) == 0){
+			listStreet.push(promMas);
+			prMas = promMas;
+			}
+		}
 	};
 return listStreet;
 }
@@ -115,8 +121,20 @@ else
    return 1;
 }
 
-//массив печатаем
 function printMas(mas){
 for(i=0;i<mas.length;i++)
 	qvlib.MsgBox(mas[i]);
+}
+
+//сравнение массивов
+function eqMas(mas1, mas2){
+if (mas1.length != mas2.length)
+	return 0;
+var nt   = mas1.length;
+var j
+var flag = 1; 
+for(j=0;j<nt;j++)
+	if (mas1[j] != mas2[j])
+		return 0;
+return flag;
 }
