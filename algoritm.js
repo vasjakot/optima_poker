@@ -180,6 +180,7 @@ for(iq=0;iq<lent;iq++){
 return masiv;
 }
 
+//индекс карты
 function strCard(i,j){
 var temp = i.toString() + "/" + j.toString();
 return  temp;
@@ -209,9 +210,18 @@ for(i=1;i<5;i++){
 return hashCards;
 }
 
-//генерируем карты из номиналов
-function genCardfromNom(nom, hash){
+//
 
+//генерируем карты из номиналов
+function genCardfromNom(masNom, hash, isum){
+var len  = masNom.length;
+var card = new Array();
+var i;
+if (isum == 1)
+	for(i=0;i<leng;i++){}
+		
+if (isum == 2)
+	return 0;
 
 return 0;
 }
