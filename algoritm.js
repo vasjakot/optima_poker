@@ -132,9 +132,86 @@ if (mas1.length != mas2.length)
 	return 0;
 var nt   = mas1.length;
 var j
-var flag = 1; 
 for(j=0;j<nt;j++)
 	if (mas1[j] != mas2[j])
 		return 0;
-return flag;
+return 1;
+}
+
+//отбора массива по старшей карте
+function otMas(mas, card){
+var len = mas.length;
+if (mas[len-1]>card)
+	return mas
+else
+	return 0;
+}
+
+//отбор масива массивов
+function otMasMas(mas, card){
+var leng    = mas.length;
+var is;
+var temp    = new Array();
+var sortMas = new Array();
+var h       = 0; 
+for(is=0;is<leng;is++){
+	temp = mas[is];
+	if (otMas(temp,card) != 0){
+		sortMas[h] = new Array();
+		sortMas    = temp;
+		h++;
+		}
+	};	
+return sortMas;
+}
+
+//разбираем строку карт
+function parse_string(strCards, flag){
+var masCard   = Array();
+var temp      = Array();
+var masiv     = Array();
+masCard       = strCards.split(";");
+var lent      = masCard.length;
+var iq;
+for(iq=0;iq<lent;iq++){
+	temp      = masCard[iq].split("/");
+	masiv[iq] = parseInt(temp[flag]);
+	};
+return masiv;
+}
+
+function strCard(i,j){
+var temp = i.toString() + "/" + j.toString();
+return  temp;
+}
+
+//ХешКарты генерируем
+function genHash(mas,nom){
+var i;
+var j;
+var str;
+var leng      = nom.length;
+var hashCards = new Object();
+var tempOb    = new Object();
+for(i=0;i<leng;i++){
+	str                    = mas[i].toString() + "/" + nom[i].toString();
+	tempOb[str.toString()] = 1;
+	};
+for(i=1;i<5;i++){
+	for (j=2;j<15;j++){
+		str 		   = i.toString() + "/" + j.toString();
+		if (tempOb[str.toString()] == 1)
+			hashCards[str.toString()] = 1
+		else
+			hashCards[str.toString()] = 0;
+		};
+	};
+return hashCards;
+}
+
+//генерируем карты из номиналов
+function genCardfromNom(nom, hash){
+
+
+return 0;
 }
