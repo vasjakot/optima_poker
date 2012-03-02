@@ -182,8 +182,7 @@ return masiv;
 
 //индекс карты
 function strCard(i,j){
-var temp = i.toString() + "/" + j.toString();
-return  temp;
+return  i.toString() + "/" + j.toString();;
 }
 
 //ХешКарты генерируем
@@ -210,18 +209,73 @@ for(i=1;i<5;i++){
 return hashCards;
 }
 
-//
-
 //генерируем карты из номиналов
 function genCardfromNom(masNom, hash, isum){
-var len  = masNom.length;
-var card = new Array();
-var i;
-if (isum == 1)
-	for(i=0;i<leng;i++){}
+var len     = masNom.length;
+var card    = new Array();
+var is;
+var j;
+var temp;
+var tempMas = new Array();
+var firstCard;
+var secondCard;
+var str;
+var flag;
+if (isum == 1){
+	for(is=0;is<len;is++){
+		temp = masNom[is];
+		for(j=1;j<5;j++){
+			str = strCard(j,temp)
+			if (hash[str] == 0){	
+				card.push(str);
+				hash[str] = 1;
+				}
+			}
+		}
+	}
+if (isum == 2){
+	for(is=0;is<len;is++){
+		tempMas    = masNom[is];
+		firstCard  = tempMas[0];
+		secondCard = tempMas[1];
+		if (firstCard == secondCard)
+			flag   = 1
+		else
+			flag   = 0;
 		
-if (isum == 2)
-	return 0;
+		
+		
+		}
+	}
 
-return 0;
+return card;
+}
+
+function getNotNulEll(mas){
+var lenh  = mas.length;
+var count = 0;
+for(iss = 0; iss < lenh; iss++){
+	if(mas[iss] != 0)
+		count++;
+	};
+return count;
+}
+
+function getNotNulEllMas(mas, fl){
+var lenh  = mas.length;
+var count = 0;
+for(iss = 0; iss < lenh; iss++){
+	if(mas[iss] != fl)
+		count++;
+	};
+return count;
+}
+
+function getNotNulEllHash(hash, fl){
+var count = 0;
+for(var key in hash){
+	if(hash[key] != fl)
+		count++;
+	}
+return count;
 }
