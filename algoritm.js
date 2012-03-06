@@ -23,6 +23,11 @@ coun_list_pryor     = {"None":5, "Pair":3, "two pair":1, "Troika":2,
 				  	   "Street Flash":0,  "Flash Rojal":0};
 }
 
+//берем максимальные карты
+function getHighCar(nom, numCards){
+return 0;
+}
+
 //порождаем массив в количестве count и с началом в BeginItem
 function genMas(BeginItem, count){
 var mas = new Array();
@@ -343,6 +348,7 @@ for(i=1;i<len;i++){
 return pare;
 }
 
+//кол-во элементов в массиве не равных fl
 function getNotNulEllMas(mas, fl){
 var lenh  = mas.length;
 var count = 0;
@@ -353,6 +359,7 @@ for(iss = 0; iss < lenh; iss++){
 return count;
 }
 
+//кол-во элементов в хеше не равных fl
 function getNotNulEllHash(hash, fl){
 var count = 0;
 for(var key in hash){
