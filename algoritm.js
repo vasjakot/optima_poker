@@ -23,9 +23,37 @@ coun_list_pryor     = {"None":5, "Pair":3, "two pair":1, "Troika":2,
 				  	   "Street Flash":0,  "Flash Rojal":0};
 }
 
-//берем максимальные карты
-function getHighCar(nom, numCards){
-return 0;
+/*приоритет в номиналах карт, берем массив выводим массив i-й элемент которого есть i-по порядку убывания
+предполагается что массив с неповторяющимися элементами
+kol = 1,2,3,5 - кол-во больших номиналов которые мы ищем
+*/
+function masPrior(mas,kol){
+var pr      = new Array();
+var tempMas = new Array();
+var stron   = new Object();
+var len     = mas.length;
+tempMas     = equal(mas);
+var i;
+for(i=0;i<len;i++)
+	stron[tempMas[i]] = i;
+tempMas.sort(CompareForSort);
+for(i=0;i<len;i++)
+	pr[i] = stron[tempMas[len-i-1]];
+
+return pr.slice(0,kol)
+}
+
+//сравнить первый и второй массив
+function compMass(mas1,mas2){
+var len = mas1.length;
+var i;
+for(i=0;i<len;i++){
+	if mas1[i]<mas2[i]
+		return 0;
+	if mas1[i]>mas2{i}
+		return 1;
+	};
+return -1
 }
 
 //порождаем массив в количестве count и с началом в BeginItem
