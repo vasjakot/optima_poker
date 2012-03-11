@@ -5,23 +5,61 @@ var ownCardMasPlayer = new Array(1,1);
 
 //карты на столе
 var tableCardNom     = new Array(3,5,12,6,9);
-var tableCardMas     = new Array(2,3,1, 1,1);
+var tableCardMas     = new Array(2,3, 1,1,1);
 
 //все открытые карты
 var alCardNom        = ownCardNomPlayer.concat(tableCardNom);
 var alCardMas        = ownCardMasPlayer.concat(tableCardMas);
 
-//хэш карт
+//считаем силу стола и нашего игрока
+var fraze;
+var fraze1;
+var setOwmPl         = getNewStrongHandNew(alCardNom,alCardMas,fraze);
+var setTable         = getNewStrongHandNew(tableCardNom, tableCardMas, fraze1);
+var forceOwn         = setOwmPl.pop();
+var forceTab         = setTable.pop();
+var tagForce         = 0;
+var tagCards         = 0;
+var nomLastCards;
+
+//хэш карт 0 - карта закрыта, 1 - открыта
 var hash = new Object();
 hash = genHash(alCardMas,alCardNom);
 
 //массив приоритетов
 var pryor    		= new Array("None", "Pair", "two pair", "Troika", "Street", "Flash", "fulhouse", "kare",  "Street Flash", "Flash Rojal");
+//сколько осталось карт
 var coun_list_pryor = new Object();
 coun_list_pryor     = {"None":5, "Pair":3, "two pair":1, "Troika":2, 
 				  	   "Street":0, "Flash":0, "fulhouse":0, "kare":1, 
 				  	   "Street Flash":0,  "Flash Rojal":0};
+
+if (forceOwn == forceTab)
+	tagForce = 1;
+	
+nomLastCards = coun_list_pryor[pryor[forceOwn]];
+if (nomLastCards == 0)
+	tagCards = 1;				  	   
+
+var itter;
+var masOne = new Array();
+var masTwo = new Array();
+for(itter=forceOwn; itter<pryor.length; itter++){
+	if(itter == 0){}
+	if(itter == 1){}
+	if(itter == 2){}
+	if(itter == 3){}
+	if(itter == 4){}
+	if(itter == 5){}
+	if(itter == 6){}
+	if(itter == 7){}
+	if(itter == 8){}
+	if(itter == 9){}
+	}
+
+printMas(setOwmPl);			  	   
 }
+
 
 /*приоритет в номиналах карт, берем массив выводим массив i-й элемент которого есть i-по порядку убывания
 предполагается что массив с неповторяющимися элементами
@@ -48,12 +86,12 @@ function compMass(mas1,mas2){
 var len = mas1.length;
 var i;
 for(i=0;i<len;i++){
-	if mas1[i]<mas2[i]
+	if (mas1[i]<mas2[i])
 		return 0;
-	if mas1[i]>mas2{i}
+	if (mas1[i]>mas2[i])
 		return 1;
 	};
-return -1
+return -1;
 }
 
 //порождаем массив в количестве count и с началом в BeginItem
@@ -411,6 +449,11 @@ for(var key in hash){
 		}
 	}
 return mas
+}
+
+//печать
+function print(v){
+alert(v);
 }
 
 
