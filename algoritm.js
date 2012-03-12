@@ -21,45 +21,250 @@ var forceTab         = setTable.pop();
 var tagForce         = 0;
 var tagCards         = 0;
 var nomLastCards;
-
+var set              = setOwmPl;
 //хэш карт 0 - карта закрыта, 1 - открыта
 var hash = new Object();
 hash = genHash(alCardMas,alCardNom);
 
 //массив приоритетов
-var pryor    		= new Array("None", "Pair", "two pair", "Troika", "Street", "Flash", "fulhouse", "kare",  "Street Flash", "Flash Rojal");
+var pryor    		= new Array("None", "Pair", "two pair", "Troika", 
+								"Street", "Flash", "fulhouse", "kare",  
+								"Street Flash", "Flash Rojal");
 //сколько осталось карт
 var coun_list_pryor = new Object();
 coun_list_pryor     = {"None":5, "Pair":3, "two pair":1, "Troika":2, 
 				  	   "Street":0, "Flash":0, "fulhouse":0, "kare":1, 
 				  	   "Street Flash":0,  "Flash Rojal":0};
 
+	
+//ищем кикер в оствшихся картах 	
+var lastCardNomPl   = new Array();
+var lastCardMasPl   = new Array();
+var lastCardNomTab  = new Array();
+var lastCardMasTab  = new Array();
+var tempMas         = new Array();
+var itter;
+var tempCardNom;
+//если пара
+if ((forceOwn == 1) ||(forceOwn == 3)){
+	if (set[0] != alCardNom[0]){
+		lastCardNomPl.push(alCardNom[0]);
+		lastCardMasPl.push(alCardMas[0]);
+		}
+	if (set[0] != alCardNom[1]){
+		lastCardNomPl.push(alCardNom[1]);
+		lastCardMasPl.push(alCardMas[1]);
+		}
+	for(itter=0;itter<5;itter++){
+		if (tableCardNom[itter] != set[0]){
+			lastCardNomTab.push(tableCardNom[itter]);
+			lastCardMasTab.push(tableCardMas[itter]);
+			}
+		}
+	}
+	
+//если две пары
+if (forceOwn == 2){
+	if ((set[0] != alCardNom[0]) && (set[1] != alCardNom[0])){
+		lastCardNomPl.push(alCardNom[0]);
+		lastCardMasPl.push(alCardMas[0]);
+		}
+	if ((set[0] != alCardNom[1]) && (set[1] != alCardNom[1])){
+		lastCardNomPl.push(alCardNom[1]);
+		lastCardMasPl.push(alCardMas[1]);
+		}
+	for(itter=0;itter<5;itter++){
+		if ((tableCardNom[itter] != set[0]) && (tableCardNom[itter] != set[1])){
+			lastCardNomTab.push(tableCardNom[itter]);
+			lastCardMasTab.push(tableCardMas[itter]);
+			}
+		}
+	}
+
+//если карэ, set возвращает масть
+if (forceOwn == 7){
+	tempMas  = getNom(alCardNom,alCardMas,set[0]);
+	for(itter=0;itter<tempMas.length;itter++){
+		if (numIsEl(tempMas[itter]) == 4)
+			tempCardNom = tempMas[itter];
+		};
+	
+	if (alCardNom[0] == tempCardNom){
+		lastCardNomPl.push(alCardNom[0]);
+		lastCardMasPl.push(alCardMas[0]);
+		}
+	if (alCardNom[1] == tempCardNom){
+		lastCardNomPl.push(alCardNom[0]);
+		lastCardMasPl.push(alCardMas[0]);
+		}
+	for(itter=0;itter<5;itter++){
+		if (tableCardNom[itter] == tempCardNom){
+			lastCardNomTab.push(tableCardNom[itter]);
+			lastCardMasTab.push(tableCardMas[itter]);
+			}
+		}
+	}
+
 if (forceOwn == forceTab)
 	tagForce = 1;
-	
-nomLastCards = coun_list_pryor[pryor[forceOwn]];
-if (nomLastCards == 0)
-	tagCards = 1;				  	   
 
-var itter;
+//однокарточный массив
 var masOne = new Array();
+//двухкарточный массив
 var masTwo = new Array();
-for(itter=forceOwn; itter<pryor.length; itter++){
-	if(itter == 0){}
-	if(itter == 1){}
-	if(itter == 2){}
-	if(itter == 3){}
-	if(itter == 4){}
-	if(itter == 5){}
-	if(itter == 6){}
-	if(itter == 7){}
-	if(itter == 8){}
-	if(itter == 9){}
+
+var h;
+var s;
+var ex = 0;
+//работаем на текущей силе
+if(forceOwn == 0){
+		var pp = 0//что-то делать
+		}
+//у нас пара
+if(forceOwn == 1){
+	//если пара целиком не на столе то
+	if (tagForce == 0){
+		h = 0;
+		for(itter=0;itter<5;itter++){
+			if(tableCardNom[itter] > set[0])
+				masOne.push(tableCardNom[itter]);
+			//если одна все же есть на столе
+			if(tableCardNom[itter] == set[0]){
+				var ppn = new Array();
+				ppn     = lastCardNomPl.concat(lastCardNomTab);
+				var ppt = masPrior(ppn,3);
+				var startEl;
+				if (isEl(0, ppt) == 1)
+					startEl = ppt[ppt.length-1]+1
+				else
+					startEl = ppt[0]+1;
+				if (startEl<14){
+					for(itter=startEl;itter<15;itter++){
+						masTwo[h] = new Array();
+						masTwo[h].push(itter);
+						masTwo[h].push(set[0]);
+						h++
+						}
+					}
+				}
+			}
+		if (set[0]<14){
+			for(itter=set[0]+1;itter<15;itter++){
+				masTwo[h] = new Array();
+				masTwo[h].push(itter);
+				masTwo[h].push(itter);
+				h++
+				}
+			}
+		}
+	else{
+		//если на столе то достаточно подобрать кикер
+		var ppn = new Array();//найдем кикер
+		ppn     = lastCardNomPl.concat(lastCardNomTab);
+		var tm  = getMax(ppt[0],ppt[1]);
+		ppt     = masPrior(ppn,3);
+		if (isEl(tm, ppt) == 0)
+			startEl = tm+1
+		else
+			startEl = ppt[ppt.length-1]+1;
+		if (startEl<14){
+			for(itter=startEl;itter<15;itter++)
+				masOne.push(itter);
+			}
+		}
+	}
+//у нас две пары
+if(forceOwn == 2){
+	var pp = 0;//что-то делать
+	}
+//у нас тройка
+if(forceOwn == 3){
+	var pp = 0;//что-то делать
+	}
+//у нас стрит
+if(forceOwn == 4){
+	var pp = 0;//что-то делать
+	}
+//у нас флэш
+if(forceOwn == 5){
+	var pp = 0;//что-то делать
+	}
+if(forceOwn == 6){
+	var pp = 0;//что-то делать
+	}
+if(forceOwn == 7){
+	var pp = 0;//что-то делать
+	}
+if(forceOwn == 8){
+	var pp = 0;//что-то делать
+	}
+if(forceOwn == 9){
+	ex = 1;
+	var pp = 0;//что-то делать
+	}
+
+if (ex == 0){
+	for(itter=forceOwn+1; itter<pryor.length; itter++){
+		//у противника пара
+		if(itter == 1){
+			var pp = 0;//что-то делать		
+			}
+		if(itter == 2){
+			var pp = 0;//что-то делать
+			}
+		if(itter == 3){
+			var pp = 0;//что-то делать
+			}
+		if(itter == 4){
+			var pp = 0;//что-то делать
+			}
+		if(itter == 5){
+			var pp = 0;//что-то делать
+			}
+		if(itter == 6){
+			var pp = 0;//что-то делать
+			}
+		if(itter == 7){
+			var pp = 0;//что-то делать
+			}
+		if(itter == 8){
+			var pp = 0;//что-то делать
+			}
+		if(itter == 9){
+			var pp = 0;//что-то делать
+			}
+		}
 	}
 
 printMas(setOwmPl);			  	   
 }
 
+//max
+function getMin(a,b){
+if (a<b)
+	return b
+else
+	return a;
+}
+
+//min
+function getMin(a,b){
+if (a<b)
+	return a
+else
+	return b;
+}
+
+//колво вхождений елемента в массив
+function numIsEl(el,mas){
+var i;
+var flag = 0;
+for(i=0;i<mas.length;i++){
+	if (el == mas[i])
+		flag++;
+	};	
+return flag;
+}
 
 /*приоритет в номиналах карт, берем массив выводим массив i-й элемент которого есть i-по порядку убывания
 предполагается что массив с неповторяющимися элементами
@@ -456,8 +661,20 @@ function print(v){
 alert(v);
 }
 
+//массив номиналов данной масти
+function getNom(nominal,masti,nomerMast){
+var i;
+var h=0;
+var masiv = new Array();
+for(i=0;i<nominal.length;i++){
+	if (masti[i] == nomerMast){
+		masiv[h] =  nominal[i];
+		h++;
+		};
+	}
+return masiv;
+}
 
-/* -------- старые функции  --------------*/
 //является ли элементом масива
 function isEl(el, mas){
 var len = mas.length;
@@ -468,6 +685,8 @@ for(i=0;i<len;i++){
 	}
 return 1;
 }
+
+/* -------- старые функции  --------------*/
 
 //генерируем хэш карт
 function genCards(nom,mas){
@@ -513,22 +732,6 @@ var list = getNom(nom,mast,s);
 var StreetFlash = new Array();
 StreetFlash = streets(list);
 return StreetFlash;
-}
-
-//массив номиналов данной масти
-function getNom(nominal,masti,nomerMast){
-var i;
-var h=0;
-//qvlib.MsgBox(masti);
-//qvlib.MsgBox(nominal);
-var masiv = new Array();
-for(i=0;i<nominal.length;i++){
-	if (masti[i] == nomerMast){
-		masiv[h] =  nominal[i];
-		h++;
-		};
-	}
-return masiv;
 }
 
 //проверка на flash
@@ -735,7 +938,7 @@ return 0;
 }
 
 //есть ли пары нов
-function Pair(mas, с){
+function Pairs(mas, с){
 var mainMas = new Array();
 mainMas = cheked(mas, 2, 14);
 var flag=0;
